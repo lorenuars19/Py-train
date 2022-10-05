@@ -1,4 +1,5 @@
 import math
+from random import randint
 import sys
 
 
@@ -37,8 +38,11 @@ class BTree:
         number_len = 3
         max_nodes = (round(pow(2, self.depth - 1)))
         max_line_len = number_len * ((max_nodes * 2) - 1)
-
+        print(self.data)
         print("-" * (max_line_len), "TREE")
+        if self.depth == 0:
+            print("EMPTY TREE")
+            return
 
         for stage in range(1, self.depth + 1):
             start_idx = pow(2, stage - 1)
@@ -64,9 +68,7 @@ class BTree:
                 if node:
                     print(f"{node:0>{number_len}}", end='')
                 if not node:
-                    empty = "NONE"
-                    # print("-" * number_len, end='')
-                    print(f"{empty:0.{number_len}}", end='')
+                    print("-" * number_len, end='')
             if stage < self.depth:
                 print("", end="\n")
                 print(" " * init_space_num, end='')
@@ -89,9 +91,8 @@ if __name__ == '__main__':
 
         NUM = int(sys.argv[1])
 
-    for i in range(1,
-                   NUM + 1):
-        tree.add(i)
+    for i in range(1, NUM + 1):
+        tree.add(randint(-99, 99))
 
     print(f"<MAIN>{tree=} {tree.data=}<>\n")
 
