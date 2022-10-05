@@ -17,12 +17,8 @@ class BTree:
         if self.last_idx < next_len:
             while len(self.data) < next_len - 1:
                 self.data.append(None)
-        print(
-            f"{self.data=}\n  {self.depth=} {self.last_idx=} {next_len=} {len(self.data)=}<>\n")
-
         self.data[self.last_idx] = value
         self.last_idx += 1
-        print(f"{self.data=} {self.last_idx=} {self.depth=}")
 
     def get_parent(self, index):
         return self.data[index // 2]
@@ -38,38 +34,40 @@ class BTree:
         return ret
 
     def pretty_print(self):
-        number_len = 5
-        max_nodes = 0
+        number_len = 3
+        max_nodes = (round(pow(2, self.depth - 1)))
+        max_line_len = number_len * ((max_nodes * 2) - 1)
 
-        print("-" * 20, "TREE", "-" * 20)
+        print("-" * (max_line_len), "TREE")
 
-        for stage in range(self.depth + 1):
-            start_idx = pow(2, stage)
+        for stage in range(1, self.depth + 1):
+            start_idx = pow(2, stage - 1)
             if self.depth == 1:
-                start_idx = 0
-            end_idx = 0
+                start_idx = 1
+            end_idx = 2
             if self.depth > 1:
-                end_idx = pow(2, stage + 1) - 1
+                end_idx = pow(2, stage)
             if self.depth == 1:
                 end_idx = 2
-            stage_nodes = self.data[start_idx:end_idx + 1]
+            stage_nodes = self.data[start_idx:end_idx]
 
-            space_num = abs(max_nodes - number_len)
-            max_nodes = round(math.pow(2, (self.depth - stage)))
-            init_space_num = max_nodes
-            # print(f"{max_nodes=} {init_space_num=} {space_num=}")
-            if stage < self.depth - 1:
-                print(" " * init_space_num, end='')
+            space_num = round(max_line_len / pow(2, stage - 1)) - number_len
+
+            init_space_num = round(max_line_len / pow(2, stage)) - 1
+
+            # print(f"{max_line_len=} {max_nodes=}")
+
+            print(" " * init_space_num, end='')
             for idx, node in enumerate(stage_nodes):
                 if idx > 0:
                     print(" " * space_num, end='')
                 if node:
-                    print(f"{node:^{number_len}}", end='')
-                elif not node:
-                    empty = "None"
+                    print(f"{node:0>{number_len}}", end='')
+                if not node:
+                    empty = "NONE"
                     # print("-" * number_len, end='')
                     print(f"{empty:0.{number_len}}", end='')
-            if stage < self.depth - 1:
+            if stage < self.depth:
                 print("", end="\n")
                 print(" " * init_space_num, end='')
                 for idx, node in enumerate(stage_nodes):
@@ -77,8 +75,8 @@ class BTree:
                         print(" " * space_num, end='')
                     lines = "/ \\"
                     print(f"{lines:^{number_len}}", end='')
-
             print("", end="\n")
+        print("-" * (max_line_len), "TREE")
 
 
 if __name__ == '__main__':
