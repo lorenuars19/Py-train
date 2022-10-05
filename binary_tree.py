@@ -38,7 +38,7 @@ class BTree:
         return ret
 
     def pretty_print(self):
-        number_len = 3
+        number_len = 5
         max_nodes = 0
 
         print("-" * 20, "TREE", "-" * 20)
@@ -50,10 +50,12 @@ class BTree:
             end_idx = 0
             if self.depth > 1:
                 end_idx = pow(2, stage + 1) - 1
+            if self.depth == 1:
+                end_idx = 2
             stage_nodes = self.data[start_idx:end_idx + 1]
 
             space_num = abs(max_nodes - number_len)
-            max_nodes = round(math.pow(2, (self.depth - stage - 1)))
+            max_nodes = round(math.pow(2, (self.depth - stage)))
             init_space_num = max_nodes
             # print(f"{max_nodes=} {init_space_num=} {space_num=}")
             if stage < self.depth - 1:
@@ -63,7 +65,7 @@ class BTree:
                     print(" " * space_num, end='')
                 if node:
                     print(f"{node:^{number_len}}", end='')
-                else:
+                elif not node:
                     empty = "None"
                     # print("-" * number_len, end='')
                     print(f"{empty:0.{number_len}}", end='')
