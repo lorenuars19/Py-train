@@ -81,6 +81,29 @@ class BTree:
         print("-" * (max_line_len), "TREE")
 
 
+class Heap(BTree):
+
+    def push(self, value):
+        print("PUSH")
+
+    def pop(self):
+        print("POP")
+        return None
+
+    def peek(self):
+        print("PEEK")
+        return None
+
+    def _swap(self, src, dst):
+        print("_swap", src, dst)
+
+    def _siftdown(self, idx):
+        print("_siftdown", idx)
+
+    def _siftup(self, idx):
+        print("_siftup", idx)
+
+
 if __name__ == '__main__':
 
     tree = BTree()
@@ -88,12 +111,16 @@ if __name__ == '__main__':
     NUM = 0
     # print(f"{sys.argv=}")
     if len(sys.argv) == 2:
-
         NUM = int(sys.argv[1])
 
+    # for i in range(1, NUM + 1):
+    #     tree.add(randint(-99, 99))
+
     for i in range(1, NUM + 1):
-        tree.add(randint(-99, 99))
-
-    print(f"<MAIN>{tree=} {tree.data=}<>\n")
-
+        tree.add(i)
     tree.pretty_print()
+
+    hep = Heap()
+    for i in range(1, NUM + 1):
+        hep.add(i)
+    hep.pretty_print()
