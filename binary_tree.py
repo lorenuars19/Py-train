@@ -24,14 +24,27 @@ class BTree:
     def get_parent(self, index):
         return self.data[index // 2]
 
+    def get_parent_idx(self, index):
+        return index // 2
+
     def get_children(self, index):
         child1 = index * 2
         child2 = child1 + 1
         ret = list()
-        if child1 < len(self.data):
+        if child1 < len(self.data) and self.data[child1] != None:
             ret.append(self.data[child1])
-        if child2 < len(self.data):
+        if child2 < len(self.data) and self.data[child2] != None:
             ret.append(self.data[child2])
+        return ret
+
+    def get_children_idx(self, index):
+        child1 = index * 2
+        child2 = child1 + 1
+        ret = list()
+        if child1 < len(self.data) and self.data[child1] != None:
+            ret.append(child1)
+        if child2 < len(self.data) and self.data[child2] != None:
+            ret.append(child2)
         return ret
 
     def pretty_print(self):
@@ -84,7 +97,13 @@ class BTree:
 class Heap(BTree):
 
     def push(self, value):
-        print("PUSH")
+        idx = 1
+
+        children = self.get_children_idx(idx)
+        # print(f"{children=}")
+        while len(children) > 0:
+            # children = self.get_children(idx)
+            self._siftdown(idx)
 
     def pop(self):
         print("POP")
@@ -94,10 +113,22 @@ class Heap(BTree):
         print("PEEK")
         return None
 
-    def _swap(self, src, dst):
-        print("_swap", src, dst)
+    def _swap(self, src_idx, dst_idx):
+        tmp = self.data[src_idx]
+        self.data[src_idx] = self.data[dst_idx]
+        self.data[dst_idx] = tmp
+        print("_swap", src_idx, dst_idx)
 
     def _siftdown(self, idx):
+        cur = self.data[idx]
+        children = self.get_children_idx(idx)
+
+        for i in children:
+            if cur < self.data[i]:
+                print("cur is smaller than children")
+            elif cur > self.data[i]:
+                print("cur is larger than children")
+
         print("_siftdown", idx)
 
     def _siftup(self, idx):
@@ -120,7 +151,7 @@ if __name__ == '__main__':
         tree.add(i)
     tree.pretty_print()
 
-    hep = Heap()
+    h = Heap()
     for i in range(1, NUM + 1):
-        hep.add(i)
-    hep.pretty_print()
+        h.push(i)
+    h.pretty_print()
